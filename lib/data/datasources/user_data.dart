@@ -22,7 +22,8 @@ class UserRemoteDataSource {
           uid: useruid,
         );
 
-        try {        final prefs = await SharedPreferences.getInstance();
+        try {        
+        final prefs = await SharedPreferences.getInstance();
         await prefs.setInt("id", userid);
         await prefs.setString("username", usernames);
         await prefs.setString("email", email);
