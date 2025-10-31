@@ -26,7 +26,7 @@ String getAppointmentTitle(String appointmentDate, String appointmentTime) {
     // Default
     return "Appointment on $appointmentDate";
   } catch (e) {
-    print(" there are errors $e");
+    // print(" there are errors $e");
     return "Appointment $appointmentDate";
     
   }

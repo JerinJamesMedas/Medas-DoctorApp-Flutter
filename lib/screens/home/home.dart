@@ -21,10 +21,17 @@ class DoctorHomePage extends StatefulWidget {
 class _DoctorHomePageState extends State<DoctorHomePage> {
   bool showTimeoutError = false;
 
+  late Future<void> _initPatient; 
+
   @override
   void initState() {
     super.initState();
 
+  if(!di.gi.isRegistered<PatientBloc>()){
+    _initPatient = di.initPatient();
+  } else {
+    _initPatient = Future.value();
+  }
     // Timeout check for showing error if loading too long
     Future.delayed(const Duration(seconds: 10), () {
       if (mounted) {
@@ -49,6 +56,9 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initPatient,
+      builder: (context, snapshot) {
     return BlocProvider(
       create: (_) => di.gi<PatientBloc>()..add(LoadPatients()),
       child: BlocBuilder<PatientBloc, PatientState>(
@@ -134,6 +144,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         },
       ),
     );
+  });
   }
 
   Widget _buildMainUI(BuildContext context, List<Patient> patients) {

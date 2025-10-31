@@ -33,7 +33,7 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
         emit(PatientLoadedState(patients));
       } catch (e) {
         emit(PatientLoadError());
-        print("Error loading patients: $e");
+       // print("Error loading patients: $e");
       }
     });
   }

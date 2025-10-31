@@ -18,7 +18,50 @@ import 'package:doctors_app/common_class/bloc/patient_bloc.dart';
 
 final gi = GetIt.instance;
 
-Future<void> init() async {
+Future<void> initUser() async{
+  
+  gi.registerLazySingleton<UserRemoteDataSource>(
+    () => UserRemoteDataSource(gi<Dio>()));
+  
+  gi.registerLazySingleton<UserRepo>(
+    () => UserRepoImpl(gi<UserRemoteDataSource>())
+  );
+
+  gi.registerLazySingleton<GetUser>(
+    () => GetUser(gi<UserRepo>()),
+  );
+
+  gi.registerFactory<UserBloc>(
+    () => UserBloc(gi<GetUser>()),
+  );
+}
+
+Future<void> initDoctor() async{
+
+// Doctor Data source
+  gi.registerLazySingleton<DoctorRemoteDataSource>(
+    () => DoctorRemoteDataSource(gi<Dio>()),
+  );
+
+  // Doctor Repository
+  gi.registerLazySingleton<DoctorRepo>(
+    () => DoctorRepositoryImpl(gi<DoctorRemoteDataSource>()),
+  );
+
+  // Doctor Use case
+  gi.registerLazySingleton<GetDoctor>(
+    () => GetDoctor(gi<DoctorRepo>()),
+  );
+
+  // Doctor Bloc
+  gi.registerFactory<DoctorBloc>(
+    () => DoctorBloc(gi<GetDoctor>()),
+  );
+
+
+}
+
+Future<void> initPatient() async {
   // External
   gi.registerLazySingleton<Dio>(() => Dio());
 
@@ -40,47 +83,5 @@ Future<void> init() async {
   // Bloc
   gi.registerFactory<PatientBloc>(
     () => PatientBloc(gi<GetPatients>()),
-  );
-
-
-//---------------------------------------------------------
-
-
-  // Doctor Data source
-  gi.registerLazySingleton<DoctorRemoteDataSource>(
-    () => DoctorRemoteDataSource(gi<Dio>()),
-  );
-
-  // Doctor Repository
-  gi.registerLazySingleton<DoctorRepo>(
-    () => DoctorRepositoryImpl(gi<DoctorRemoteDataSource>()),
-  );
-
-  // Doctor Use case
-  gi.registerLazySingleton<GetDoctor>(
-    () => GetDoctor(gi<DoctorRepo>()),
-  );
-
-  // Doctor Bloc
-  gi.registerFactory<DoctorBloc>(
-    () => DoctorBloc(gi<GetDoctor>()),
-  );
-
-
-  //--------------------------------------------------------
-
-  gi.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSource(gi<Dio>()));
-  
-  gi.registerLazySingleton<UserRepo>(
-    () => UserRepoImpl(gi<UserRemoteDataSource>())
-  );
-
-  gi.registerLazySingleton<GetUser>(
-    () => GetUser(gi<UserRepo>()),
-  );
-
-  gi.registerFactory<UserBloc>(
-    () => UserBloc(gi<GetUser>()),
   );
 }

@@ -4,35 +4,38 @@ import 'package:doctors_app/screens/Status/status_all.dart';
 import 'package:doctors_app/screens/home/features/patients_statitics_card.dart';
 import 'package:flutter/material.dart';
 
-class TodaysStatus extends StatelessWidget {
+class TodaysStatus extends StatefulWidget {
   final List<Patient> patients;
   const TodaysStatus({required this.patients, super.key});
 
   @override
+  State<TodaysStatus> createState() => _TodaysStatusState();
+}
+
+class _TodaysStatusState extends State<TodaysStatus> {
+  int revisits = 0;
+  int yescount = 0;
+  int visitedcount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _countcheck();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _countcheck() {
+    revisits = widget.patients.where((a) => a.revisit == "yes").length;
+    yescount = widget.patients.where((a) => a.op == "Yes").length;
+    visitedcount = widget.patients.where((a) => a.visited == true).length;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int revisits = patients.where((a) =>a.revisit == "yes").length;
-    int yescount = patients.where((a) => a.op == "Yes").length;
-    int visitedcount = patients.where((a) => a.visited == true).length;
-    // int getTodayRevisitCount(List<dynamic> patients) {
-    //   final today = DateTime.now();
-
-    //   return patients.where((p) {
-    //     // Parse appointment date
-    //     final apptDate = DateTime.parse(p.appointmentDate);
-    //     // Check if appointment is today
-    //     final isToday =
-    //         apptDate.year == today.year &&
-    //         apptDate.month == today.month &&
-    //         apptDate.day == today.day;
-    //     // Check revisit
-    //     final isRevisit = p.visitcount > 1;
-
-    //     return isToday && isRevisit;
-    //   }).length;
-    // }
-
-    // final revisitcount = getTodayRevisitCount(patients);
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -44,30 +47,37 @@ class TodaysStatus extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StatusAll(heading: "All Patients", patient: patients,selection: "All",),
+                    builder: (context) => StatusAll(
+                      heading: "All Patients",
+                      patient: widget.patients,
+                      selection: "All",
+                    ),
                   ),
                 );
               },
               child: PatientsStatiticsCard(
                 colrs: Colors.blue,
                 heading: "ALL",
-                count: patients.length,
+                count: widget.patients.length,
                 iconPath: "assets/images/totalAppointments.png",
                 iconheight: 36,
                 iconwidth: 36,
               ),
             ),
             GestureDetector(
-                            onTap: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StatusAll(heading: "All Patients", patient: patients,selection: "OP",),
+                    builder: (context) => StatusAll(
+                      heading: "All Patients",
+                      patient: widget.patients,
+                      selection: "OP",
+                    ),
                   ),
                 );
               },
               child: PatientsStatiticsCard(
-                
                 colrs: Colors.blue,
                 heading: "OP",
                 count: yescount,
@@ -77,11 +87,15 @@ class TodaysStatus extends StatelessWidget {
               ),
             ),
             GestureDetector(
-                            onTap: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StatusAll(heading: "All Patients", patient: patients,selection: "Visited",),
+                    builder: (context) => StatusAll(
+                      heading: "All Patients",
+                      patient: widget.patients,
+                      selection: "Visited",
+                    ),
                   ),
                 );
               },
@@ -102,11 +116,15 @@ class TodaysStatus extends StatelessWidget {
           children: [
             SizedBox(width: 48),
             GestureDetector(
-                            onTap: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StatusAll(heading: "All Patients", patient: patients,selection: "Revisit",),
+                    builder: (context) => StatusAll(
+                      heading: "All Patients",
+                      patient: widget.patients,
+                      selection: "Revisit",
+                    ),
                   ),
                 );
               },

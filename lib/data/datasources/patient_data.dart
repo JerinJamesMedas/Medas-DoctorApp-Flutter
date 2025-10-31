@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import '../../common_class/RefreshToken/refresh_token.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/patient.dart';
@@ -12,80 +13,73 @@ class PatientRemoteDataSource {
   Future<List<Patient>> fetchPatients() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final uid = prefs.getString("uid");
-      final role = prefs.getString("role"); // ✅ check role
-      print("in data fetching");
-      print("UID: $uid, Role: $role");
+      final rToken = RToken(dio, prefs);
+      final role = prefs.getString("role");
+      final userId = prefs.getString("userId");
+      final accessToken = prefs.getString("accessToken") ?? "";
 
-      // 🔹 If admin, load from assets instead of API
-      if (role == "admin") {
-        final String response = await rootBundle.loadString(
-          "assets/data/patient_details.json",
+      List<dynamic> jsonList;
+
+      if (role == "admin" && userId == null) {
+        final response = await rootBundle.loadString("assets/data/patient_details.json");
+        jsonList = json.decode(response) as List<dynamic>;
+      } else {
+        final response = await dio.get(
+          "http://192.168.29.142:5000/patients/$userId",
+          options: Options(
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $accessToken",
+            },
+          ),
         );
-        final data = json.decode(response) as List<dynamic>;
-   
 
-        return data
-            .map(
-              (json) => Patient(
-                name: json['patient'],
-                mr: json['mr'],
-                dob: json['dob'],
-                type: json['type'],
-                nationality: json['nationality'],
-                city: json['city'],
-                visitcount: json['visitCount'],
-                appointmentDate: json['appointmentDate'],
-                appointmentTime: json['appointmentTime'],
-                op: json['op'] ?? 'No',
-                mode: json['mode'] ?? '',
-                title: json['title'] ?? '',
-                revisit: json['revisit'],
-                visited: json['visited'],
-                allergies: json["allergies"] != null
-                    ? List<String>.from(json["allergies"])
-                    : [],
-                notes: json["notes"] != null
-                    ? List<String>.from(json["notes"])
-                    : [],
-              ),
-              
-            )
-            .toList();
+        var data = response.data as Map<String, dynamic>;
+        if (data["error"] == "Invalid Token") {
+          final newAccessToken = await rToken.reftoken();
+          prefs.setString("accessToken", newAccessToken);
+          final retryResponse = await dio.get(
+            "http://192.168.29.142:5000/patients/$userId",
+            options: Options(
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $newAccessToken",
+              },
+            ),
+          );
+          data = retryResponse.data as Map<String, dynamic>;
+        }
+
+        jsonList = data["patient"];
       }
 
-      // 🔹 Otherwise, fetch from API
-      final response = await dio.post(
-        "http://10.0.2.2:8060/trial_1/doctor/patient",
-        queryParameters: {"docid": uid},
-        options: Options(headers: {"Content-Type": "application/json"}),
-      );
+      return jsonList.map((json) {
+        int parseInt(dynamic v) {
+          if (v == null) return 0;
+          if (v is int) return v;
+          if (v is String) return int.tryParse(v) ?? 0;
+          return 0;
+        }
 
-      final data = response.data as Map<String, dynamic>;
-      final List<dynamic> jsonList = data["patient"];
-
-      return jsonList
-          .map(
-            (json) => Patient(
-              name: json['patient'],
-              mr: json['mr'],
-              dob: json['dob'],
-              type: json['type'],
-              nationality: json['nationality'],
-              city: json['city'],
-              visitcount: json['visitCount'],
-              appointmentDate: json['appointmentDate'],
-              appointmentTime: json['appointmentTime'],
-              op: json['op'] ?? 'No',
-              mode: json['mode'] ?? '',
-              title: json['title'] ?? '',
-              revisit: json['revisit'],
-              visited: json['visited'],
-              allergies: json["allergies"],
-              notes: json["notes"],
-            ),
-          )
-          .toList();
+        return Patient(
+          consultId: parseInt(json['consult_id']),
+          appointType: (json['appoint_type'] ?? '').toString(),
+          patientId: parseInt(json['patient_id']),
+          appointHr: parseInt(json['appoint_hr']),
+          appointMin: parseInt(json['appoint_min']),
+          appointPurpose: (json['appoint_purpose'] ?? '').toString(),
+          appointDate: (json['appoint_date'] ?? '').toString(),
+          opNumber: (json['op_number'] ?? '').toString(),
+          mobile: (json['mobile'] ?? '').toString(),
+          appointStatus: (json['appoint_status'] ?? '').toString(),
+          dateOfBirth: (json['date_of_birth'] ?? '').toString(),
+          patientAge: parseInt(json['patient_age']),
+          sex: (json['sex'] ?? '').toString(),
+          patientName: (json['patient_name'] ?? '').toString(),
+          visitType: (json['visit_type'] ?? '').toString(),
+          doctorView: (json['doctor_view'] ?? '').toString(),
+        );
+      }).toList();
     } on DioException catch (e) {
       throw Exception("Failed to fetch patients: ${e.message}");
     }

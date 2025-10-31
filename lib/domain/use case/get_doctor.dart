@@ -6,7 +6,7 @@ class GetDoctor {
   GetDoctor(this.repo);
 
   Future <Doctor?> excecute(){
-    print("im at getdoctor");
+    // print("im at getdoctor");
     return repo.fetchdata();
   }
 }

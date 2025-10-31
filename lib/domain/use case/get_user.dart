@@ -5,7 +5,7 @@ class GetUser {
   final UserRepo userRepo;
   GetUser(this.userRepo);
   Future<User?>execute(String email, String password){
-    print("its in get user");
+    // print("its in get user");
     return userRepo.login(email, password);
   }
 }

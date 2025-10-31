@@ -1,4 +1,3 @@
-import 'package:doctors_app/data/datasources/user_data.dart';
 import 'package:doctors_app/main.dart';
 // import 'package:doctors_app/screens/auth/doctor/login.dart';
 import 'package:doctors_app/screens/navigation/bottom_nav.dart';
@@ -8,31 +7,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginCheck extends StatelessWidget {
   const LoginCheck({super.key});
 
-  Future<Usermodel?> _getSavedUser() async {
+  Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString("accessToken");
+    final userId = prefs.getInt("user_id");
 
-    final id = prefs.getInt("id");
-    final username = prefs.getString("username");
-    final email = prefs.getString("email");
-    final role = prefs.getString("role");
-    final uid = prefs.getString("uid");
-
-    if (id != null && username != null && email != null && role != null && uid != null) {
-      return Usermodel(
-        id: id,
-        username: username,
-        email: email,
-        role: role,
-        uid: uid,
-      );
-    }
-    return null;
+    return accessToken != null && userId != null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Usermodel?>(
-      future: _getSavedUser(),
+    return FutureBuilder<bool>(
+      future: _isLoggedIn(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While checking → show loading screen
@@ -41,11 +27,11 @@ class LoginCheck extends StatelessWidget {
           );
         }
         if (snapshot.hasData && snapshot.data != null) {
-          // ✅ User found → go to Home
-          print("app realized their is key");
+          // User found → go to Home
+          //  print("app realized their is key");
           return BottomNavPage();
         } else {
-          // ❌ No user found → go to Login
+          // No user found → go to Login
           return const LandingPage();
         }
       },

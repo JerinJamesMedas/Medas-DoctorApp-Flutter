@@ -23,17 +23,17 @@ class DoctorRemoteDataSource {
       );
 
       if (response.data["status"] == "success") {
-        print("response was success");
-        print(response.data["status"]);
+        // print("response was success");
+        // print(response.data["status"]);
         return DoctorModel.fromJson(response.data["doctor"]);
       } else {
-        print(response.data["status"]);
-        print(response.data["message"]);
+        // print(response.data["status"]);
+        // print(response.data["message"]);
         return null;
       }
     } catch (e) {
-      print("there was error like this:");
-      print(e);
+      // print("there was error like this:");
+      // print(e);
       rethrow;
     }
   }

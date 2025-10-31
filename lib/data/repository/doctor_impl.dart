@@ -10,7 +10,7 @@ class DoctorRepositoryImpl implements DoctorRepo {
 
   @override
   Future<Doctor?> fetchdata() {
-    print("im at doc impl");
+    // print("im at doc impl");
     return remoteDataSource.fetchdata();
   }
 }

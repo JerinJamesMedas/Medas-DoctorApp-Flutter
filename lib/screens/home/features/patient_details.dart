@@ -12,7 +12,7 @@ class PatientDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(patient.allergies);
+    // print(patient.allergies);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -117,14 +117,14 @@ class PatientDetailsPage extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "Name: ${patient.name}",
+                                "Name: ${patient.patientName}",
                                 style: GoogleFonts.spaceGrotesk(
                                   fontSize: AppFontSize.h2,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
-                              patient.visitcount > 1
+                              patient.visitType == "F"
                                   ? BlinkingIcon(
                                       icon: Icon(
                                         Icons.r_mobiledata_outlined,
@@ -135,19 +135,19 @@ class PatientDetailsPage extends StatelessWidget {
                                   : SizedBox(),
                             ],
                           ),
-                          patient.type == "Video Call"
+                          patient.appointType == "Video Call"
                               ? Icon(
                                   Icons.videocam_outlined,
                                   color: Colors.white,
                                   size: 36,
                                 )
-                              : patient.type == "On Spot"
+                              : patient.appointType == "On Spot"
                               ? Icon(
                                   Icons.location_on,
                                   color: Colors.white,
                                   size: 36,
                                 )
-                              : patient.type == "Home Visit"
+                              : patient.appointType == "Home Visit"
                               ? Icon(
                                   Icons.home_filled,
                                   color: Colors.white,
@@ -157,7 +157,7 @@ class PatientDetailsPage extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        "MR: ${patient.mr}",
+                        "MR: ${patient.opNumber}",
                         style: GoogleFonts.spaceGrotesk(
                           fontSize: AppFontSize.h3,
                           fontWeight: FontWeight.bold,
@@ -165,7 +165,7 @@ class PatientDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "DOB: ${patient.dob}",
+                        "DOB: ${patient.dateOfBirth}",
                         style: GoogleFonts.spaceGrotesk(
                           fontSize: AppFontSize.h3,
                           fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ class PatientDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "Nationality: ${patient.nationality}",
+                        "Gender: ${patient.sex}",
                         style: GoogleFonts.spaceGrotesk(
                           fontSize: AppFontSize.h3,
                           fontWeight: FontWeight.bold,
@@ -181,7 +181,7 @@ class PatientDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "City: ${patient.city}",
+                        "Reason: ${patient.appointPurpose}",
                         style: GoogleFonts.spaceGrotesk(
                           fontSize: AppFontSize.h3,
                           fontWeight: FontWeight.bold,

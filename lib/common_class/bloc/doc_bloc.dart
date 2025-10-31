@@ -33,7 +33,7 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
     on<LoginDoctorEvent>((event, emit) async {
       emit(DoctorLoading());
       try {
-        print("im at bloc");
+        //print("im at bloc");
         final doctor = await getDoctor.excecute();
         if (doctor != null) {
           emit(DoctorLoaded(doctor));

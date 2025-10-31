@@ -1,100 +1,77 @@
 import 'package:dio/dio.dart';
-import 'package:doctors_app/screens/user/user.dart';
+import 'package:doctors_app/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRemoteDataSource {
   final Dio dio;
   UserRemoteDataSource(this.dio);
+
   Future<Usermodel?> login(String email, String password) async {
     try {
-
-      if(email == "admin@example.com" && password == "admin@123"){
-        int userid = 12345;
-        String usernames = "jerry";
-        String userrole = "admin";
-        String useruid = "jerry123";
-
-                final user = Usermodel(
-          email: email,
-          id: userid,
-          role: userrole,
-          username: usernames,
-          uid: useruid,
+      // Admin shortcut
+      if (email == "admin@example.com" && password == "admin@123") {
+        final user = Usermodel(
+          userName: "jerry",
+          doctorsName: "Dr. Jerry",
+          doctorType: "General Practitioner",
+          departmentName: "General Medicine",
+          officeName: "Main Office",
         );
 
-        try {        
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setInt("id", userid);
-        await prefs.setString("username", usernames);
+        await prefs.setInt("id", 12345);
+        await prefs.setString("username", "jerry");
         await prefs.setString("email", email);
-        await prefs.setString("role", userrole);
-        await prefs.setString("uid",  useruid);}
-        catch(e){
-print(e);
-        }
+        await prefs.setString("role", "admin");
+        await prefs.setString("uid", "jerry123");
 
         return user;
       }
-
-      else {
+        print("its in the login function");
+      // Step 1: Login API
       final response = await dio.post(
-        // "http://192.168.1.146:8060/trial_1/login",
-        "http://10.0.2.2:8060/trial_1/login",
-        // "https://void-grace-relief-manufacturing.trycloudflare.com/trial_1/login",
-        data: {"email": email, "password": password},
-        options: Options(contentType: Headers.formUrlEncodedContentType),
+        "http://192.168.29.142:5000/user/login",
+        data: {"username": email, "password": password},
+        options: Options(contentType: Headers.jsonContentType),
       );
+      print("Login response: ${response.data}");
 
-      if (response.data["status"] == "success") {
-        final user = Usermodel.fromJson(response.data);
-        print("hiii");
-        print(user.uid);
-try {        final prefs = await SharedPreferences.getInstance();
-        await prefs.setInt("id", user.id);
-        await prefs.setString("username", user.username);
-        await prefs.setString("email", user.email);
-        await prefs.setString("role", user.role);
-        await prefs.setString("uid", user.uid);}
-        catch(e){
-print(e);
-        }
-
-        return user;
-      } else {
+      if (response.data["Accesstoken"] == null ||
+          response.data["refreshToken"] == null ||
+          response.data["user_id"] == null) {
         return null;
       }
-      }
 
+      // Step 2: Save tokens in SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("accessToken", response.data["Accesstoken"]);
+      await prefs.setString("refreshToken", response.data["refreshToken"]);
+      await prefs.setInt("user_id", response.data["user_id"]);
+
+      final accessToken = response.data["Accesstoken"];
+      final userId = response.data["user_id"];
+
+      // Step 3: Call staff/userid API
+      final userResponse = await dio.get(
+        "http://192.168.29.142:5000/staff/$userId",
+        options: Options(headers: {"Authorization": "Bearer $accessToken"}),
+      );
+      print("User details response: ${userResponse.data}");
+
+      // Step 4: Map response to Usermodel and store info
+      final userJson = userResponse.data; // JSON from staff/userid API
+      final user = Usermodel(
+        userName: userJson["user_name"] ?? "",
+        doctorsName: userJson["doctors_name"] ?? "",
+        doctorType: userJson["doctor_type"] ?? "",
+        departmentName: userJson["department_name"] ?? "",
+        officeName: userJson["office_Name"] ?? "",
+      );
+
+      return user;
     } catch (e) {
+      print("Login error: $e");
       rethrow;
     }
-    
-  }
-}
-
-class Usermodel extends User {
-  final String username;
-  final String role;
-  final String email;
-  final int id;
-  final String uid;
-  const Usermodel({
-    super.key,
-    required this.email,
-    required this.id,
-    required this.role,
-    required this.username,
-    required this.uid
-  });
-
-  factory Usermodel.fromJson(Map<String, dynamic> json) {
-    final user = json["user"];
-    return Usermodel(
-      email: user["email"],
-      id: user["id"],
-      role: user["role"],
-      username: user["username"],
-      uid: user["docid"],
-    );
   }
 }

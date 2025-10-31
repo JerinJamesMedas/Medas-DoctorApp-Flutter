@@ -79,8 +79,8 @@ class NotificationBanner extends StatelessWidget {
                         children: [
                           Text(
                             getAppointmentTitle(
-                              appt.appointmentDate,
-                              appt.appointmentTime,
+                              appt.appointDate,
+                              appt.appointHr.toString(),
                             ),
                             style: GoogleFonts.spaceGrotesk(
                               fontSize: AppFontSize.h3,
@@ -90,7 +90,7 @@ class NotificationBanner extends StatelessWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            "Patient: ${appt.name}",
+                            "Patient: ${appt.patientName}",
                             style: const TextStyle(
                               fontSize: AppFontSize.body,
                               color: Colors.white,
@@ -98,14 +98,14 @@ class NotificationBanner extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "MR No: ${appt.mr}",
+                            "MR No: ${appt.opNumber}",
                             style: const TextStyle(
                               fontSize: AppFontSize.body,
                               color: Colors.white70,
                             ),
                           ),
                           Text(
-                            "DOB: ${appt.dob}",
+                            "DOB: ${appt.dateOfBirth}",
                             style: const TextStyle(
                               fontSize: AppFontSize.body,
                               color: Colors.white70,
@@ -115,28 +115,28 @@ class NotificationBanner extends StatelessWidget {
                           Row(
                             children: [
                               Icon(
-                                appt.type == "Video Call"
+                                appt.appointType == "Video Call"
                                     ? Icons.videocam
-                                    : appt.type == "On Spot"
+                                    : appt.appointType == "On Spot"
                                     ? Icons.location_on
-                                    : appt.type == "Home Visit"
+                                    : appt.appointType == "Home Visit"
                                     ? Icons.home
                                     : Icons.phone,
                                 color: appointmentColor(
-                                  appt.appointmentDate,
-                                  appt.appointmentTime,
+                                  appt.appointDate,
+                                  appt.appointHr.toString(),
                                 ),
                                 size: 20,
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                appt.type,
+                                appt.visitType == "F" ? "Follow Up" : "New Visit",
                                 style:  TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: appointmentColor(
-                                  appt.appointmentDate,
-                                  appt.appointmentTime,
+                                  appt.appointDate,
+                                  appt.appointHr.toString(),
                                 ),
                                 ),
                               ),

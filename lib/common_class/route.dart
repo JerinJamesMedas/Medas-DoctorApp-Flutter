@@ -8,8 +8,8 @@ import 'package:doctors_app/screens/navigation/bottom_nav.dart';
 import 'package:doctors_app/screens/user/features/help_support.dart';
 import 'package:doctors_app/screens/user/features/profile_edit.dart';
 import 'package:doctors_app/screens/user/features/settings.dart';
-import 'package:doctors_app/screens/workbench/diagnosis.dart';
-import 'package:doctors_app/screens/workbench/examination.dart';
+import 'package:doctors_app/screens/workbench/diagnosis/diagnosis.dart';
+import 'package:doctors_app/screens/workbench/examination/examination.dart';
 import 'package:doctors_app/screens/workbench/follow_up.dart';
 import 'package:doctors_app/screens/workbench/history.dart';
 import 'package:doctors_app/screens/workbench/nursesheet/nurse_sheet.dart';
@@ -18,7 +18,7 @@ import 'package:doctors_app/screens/workbench/reports.dart';
 import 'package:doctors_app/screens/workbench/treatment.dart';
 import 'package:flutter/material.dart';
 
-// page Route----------------------------
+// page Route-------------------------------------------------------------------
 class AppRouter {
   static const String landing = '/';
   static const String doctorLogin = '/doctor-login';
