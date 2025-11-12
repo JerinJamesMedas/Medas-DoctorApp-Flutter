@@ -173,22 +173,22 @@ class _DoctorSchedulePageState extends State<DoctorSchedulePage> {
 
             // 🔹 Map patients → appointments for calendar display
             final appointments = patients.map((p) {
-              final rawDate = p.appointmentDate;
-              final rawTime = p.appointmentTime;
+              final rawDate = p.appointDate;
+              final rawTime = p.appointHr + p.appointMin;
               final inputFormat = DateFormat("yyyy-MM-dd h:mm a");
               final start = inputFormat.parse("$rawDate $rawTime");
-              final end = start.add(const Duration(minutes: 30));
+              final end = start.add(const Duration(minutes: 15));
 
               return DoctorAppointment(
-                patientName: p.name,
-                type: p.title,
-                status: p.type,
-                time: p.appointmentTime,
+                patientName: p.patientName,
+                type: p.appointType,
+                status: p.appointStatus,
+                time: p.appointDate,
                 startTime: start,
                 endTime: end,
-                background: p.type == "Video Call"
+                background: p.appointType == "Video Call"
                     ? Colors.green
-                    : p.type == "On Spot"
+                    : p.appointType == "On Spot"
                     ? Colors.grey
                     : Colors.blue,
               );

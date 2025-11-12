@@ -1,12 +1,12 @@
 import 'package:doctors_app/common_class/textStyle.dart';
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/home/features/notification_appointment_heading.dart';
 import 'package:doctors_app/screens/home/features/time_icon_appointment.dart';
-import 'package:doctors_app/domain/entities/patient.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationBanner extends StatelessWidget {
-  final List<Patient> appoinment;
+  final List<ConsultationModel> appoinment;
   const NotificationBanner({super.key, required this.appoinment});
 
   @override
@@ -21,7 +21,7 @@ class NotificationBanner extends StatelessWidget {
    }
   
 
-    final List<Patient> appointments = appoinment;
+    final List<ConsultationModel> appointments = appoinment;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,8 +79,8 @@ class NotificationBanner extends StatelessWidget {
                         children: [
                           Text(
                             getAppointmentTitle(
-                              appt.appointDate,
-                              appt.appointHr.toString(),
+                              appt.appointDate.toString(),
+                              appt.appointHr.toString() + ":" + appt.appointMin.toString(),
                             ),
                             style: GoogleFonts.spaceGrotesk(
                               fontSize: AppFontSize.h3,
@@ -119,11 +119,11 @@ class NotificationBanner extends StatelessWidget {
                                     ? Icons.videocam
                                     : appt.appointType == "On Spot"
                                     ? Icons.location_on
-                                    : appt.appointType == "Home Visit"
+                                    : appt.appointType == "Consultation"
                                     ? Icons.home
                                     : Icons.phone,
                                 color: appointmentColor(
-                                  appt.appointDate,
+                                  appt.appointDate.toString(),
                                   appt.appointHr.toString(),
                                 ),
                                 size: 20,
@@ -135,7 +135,7 @@ class NotificationBanner extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: appointmentColor(
-                                  appt.appointDate,
+                                  appt.appointDate.toString(),
                                   appt.appointHr.toString(),
                                 ),
                                 ),

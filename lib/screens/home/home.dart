@@ -1,6 +1,8 @@
+import 'package:doctors_app/common_class/bloc/homeBlock.dart';
 import 'package:doctors_app/common_class/bloc/patient_bloc.dart';
 import 'package:doctors_app/common_class/textStyle.dart';
 import 'package:doctors_app/injection_container.dart' as di;
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/home/features/home_skeleton.dart';
 import 'package:doctors_app/screens/home/features/notification_banner.dart';
 import 'package:doctors_app/screens/home/features/patient_card_list.dart';
@@ -27,8 +29,8 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   void initState() {
     super.initState();
 
-  if(!di.gi.isRegistered<PatientBloc>()){
-    _initPatient = di.initPatient();
+  if(!di.gi.isRegistered<HomeBloc>()){
+    _initPatient = di.initDependencies();
   } else {
     _initPatient = Future.value();
   }
@@ -50,7 +52,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   ];
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<PatientBloc>().add(LoadPatients());
+    context.read<HomeBloc>().add(LoadHomeData());
     await Future.delayed(const Duration(seconds: 1)); // small UX delay
   }
 
@@ -60,10 +62,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       future: _initPatient,
       builder: (context, snapshot) {
     return BlocProvider(
-      create: (_) => di.gi<PatientBloc>()..add(LoadPatients()),
-      child: BlocBuilder<PatientBloc, PatientState>(
+      create: (_) => di.gi<HomeBloc>()..add(LoadHomeData()),
+      child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          if (state is PatientLoadingState) {
+          if (state is HomeLoadingState) {
             if (showTimeoutError) {
               return FlutterPullUpDownRefresh(
                 scrollController: ScrollController(),
@@ -91,8 +93,8 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             return const DoctorHomeSkeleton();
           }
 
-          if (state is PatientLoadedState) {
-            final patients = state.patients;
+          if (state is HomeLoadedState) {
+            final  patients = state.homeData;
             if (patients.isEmpty) {
               return FlutterPullUpDownRefresh(
                 scrollController: ScrollController(),
@@ -147,7 +149,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   });
   }
 
-  Widget _buildMainUI(BuildContext context, List<Patient> patients) {
+  Widget _buildMainUI(BuildContext context, List<ConsultationModel> patients) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -274,7 +276,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                 const SizedBox(height: 10),
     
                 PatientCardList(
-                  patients: patients.where((p) => p.visited == true).toList(),
+                  patients: patients.where((p) => p.visited == "VISITED").toList(),
                 ),
                 const SizedBox(height: 20),
               ],

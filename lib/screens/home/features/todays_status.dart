@@ -1,11 +1,12 @@
 // import 'package:doctors_app/common_class/route.dart';
 import 'package:doctors_app/domain/entities/patient.dart';
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/Status/status_all.dart';
 import 'package:doctors_app/screens/home/features/patients_statitics_card.dart';
 import 'package:flutter/material.dart';
 
 class TodaysStatus extends StatefulWidget {
-  final List<Patient> patients;
+  final List<ConsultationModel> patients;
   const TodaysStatus({required this.patients, super.key});
 
   @override
@@ -29,9 +30,9 @@ class _TodaysStatusState extends State<TodaysStatus> {
   }
 
   void _countcheck() {
-    revisits = widget.patients.where((a) => a.revisit == "yes").length;
-    yescount = widget.patients.where((a) => a.op == "Yes").length;
-    visitedcount = widget.patients.where((a) => a.visited == true).length;
+    revisits = widget.patients.where((a) => a.doctorVisitType == "REVISIT").length;
+    yescount = widget.patients.where((a) => a.visitTypeNew== "WALK IN").length;
+    visitedcount = widget.patients.where((a) => a.visited == "VISITED").length;
   }
 
   @override

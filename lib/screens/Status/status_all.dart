@@ -1,6 +1,6 @@
 import 'package:doctors_app/common_class/animations/slider.dart';
 import 'package:doctors_app/common_class/textStyle.dart';
-import 'package:doctors_app/domain/entities/patient.dart';
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/home/features/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 class StatusAll extends StatefulWidget {
   final String selection;
   final String heading;
-  final List<Patient> patient;
+  final List<ConsultationModel> patient;
   const StatusAll({super.key, required this.heading, required this.patient, required this.selection});
 
   @override
@@ -32,11 +32,11 @@ final filteredpatient = selectedpatients == "All"
     : widget.patient.where((e) {
         switch (selectedpatients) {
           case "OP":
-            return e.op == "Yes";
+            return e.visitTypeNew == "WALK IN";
           case "Visited":
-            return e.visited == true;
+            return e.visited == "VISITED";
           case "Revisit":
-            return e.revisit == "yes";
+            return e.doctorVisitType == "REVISIT";
           // case "TotalAppointment":
           //   return widget.patient.isNotEmpty;
           // case "Referred":
@@ -126,7 +126,7 @@ final filteredpatient = selectedpatients == "All"
                           color: Colors.white,
                         ),
                         title: Text(
-                          p.name,
+                          p.patientName,
                           style: GoogleFonts.spaceGrotesk(
                             fontSize: AppFontSize.h3,
                             fontWeight: FontWeight.bold,
@@ -141,7 +141,7 @@ final filteredpatient = selectedpatients == "All"
                           ),
                         ),
                         subtitle: Text(
-                          "${p.mr} | ${p.dob} | ${p.type}",
+                          "${p.opNumber} | ${p.dateOfBirth} | ${p.visitTypeNew}",
                           style: GoogleFonts.spaceGrotesk(
                             fontSize: AppFontSize.body,
                             fontWeight: FontWeight.w500,

@@ -1,14 +1,19 @@
 import 'package:doctors_app/common_class/animations/icon_blink.dart';
 import 'package:doctors_app/common_class/route.dart';
 import 'package:doctors_app/common_class/textStyle.dart';
-import 'package:doctors_app/domain/entities/patient.dart';
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/home/features/workbenchcard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PatientDetailsPage extends StatelessWidget {
-  final Patient patient;
+  final ConsultationModel patient;
   const PatientDetailsPage({super.key, required this.patient});
+
+  @override
+  void initState() {
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,93 +319,93 @@ class PatientDetailsPage extends StatelessWidget {
                     const SizedBox(height: 10),
 
                     // Example allergy list
-                    if (patient.allergies.isNotEmpty) ...[
-                      Text(
-                        "⚠️ Allergies:",
-                        style: GoogleFonts.varelaRound(
-                          fontSize: AppFontSize.h3,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      ...patient.allergies.map(
-                        (allergy) => Padding(
-                          padding: const EdgeInsets.only(left: 12.0, bottom: 4),
-                          child: Row(
-                            children: [
-                              Icon(Icons.circle, size: 8, color: Colors.red),
-                              const SizedBox(width: 6),
-                              Text(
-                                allergy,
-                                style: GoogleFonts.varelaRound(
-                                  fontSize: AppFontSize.h3,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ] else
-                      Text(
-                        "No known allergies.",
-                        style: GoogleFonts.varelaRound(
-                          fontSize: AppFontSize.h3,
-                          color: Colors.grey[700],
-                        ),
-                      ),
+                    // if (patient.allergies.isNotEmpty) ...[
+                    //   Text(
+                    //     "⚠️ Allergies:",
+                    //     style: GoogleFonts.varelaRound(
+                    //       fontSize: AppFontSize.h3,
+                    //       fontWeight: FontWeight.w600,
+                    //       color: Colors.black87,
+                    //     ),
+                    //   ),
+                    //   const SizedBox(height: 6),
+                    //   ...patient.allergies.map(
+                    //     (allergy) => Padding(
+                    //       padding: const EdgeInsets.only(left: 12.0, bottom: 4),
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(Icons.circle, size: 8, color: Colors.red),
+                    //           const SizedBox(width: 6),
+                    //           Text(
+                    //             allergy,
+                    //             style: GoogleFonts.varelaRound(
+                    //               fontSize: AppFontSize.h3,
+                    //               color: Colors.black87,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ] else
+                    //   Text(
+                    //     "No known allergies.",
+                    //     style: GoogleFonts.varelaRound(
+                    //       fontSize: AppFontSize.h3,
+                    //       color: Colors.grey[700],
+                    //     ),
+                    //   ),
 
                     const SizedBox(height: 12),
 
-                    // Important Notes
-                    if (patient.notes.isNotEmpty) ...[
-                      Text(
-                        "📝 Important Notes:",
-                        style: GoogleFonts.varelaRound(
-                          fontSize: AppFontSize.h3,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ),
-                      ),
+                    // // Important Notes
+                    // if (patient.notes.isNotEmpty) ...[
+                    //   Text(
+                    //     "📝 Important Notes:",
+                    //     style: GoogleFonts.varelaRound(
+                    //       fontSize: AppFontSize.h3,
+                    //       fontWeight: FontWeight.w600,
+                    //       color: Colors.black87,
+                    //     ),
+                    //   ),
                       const SizedBox(height: 6),
 
                       // loop through notes list
-                      ...patient.notes.map(
-                        (note) => Padding(
-                          padding: const EdgeInsets.only(left: 8.0, bottom: 4),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "• ",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  note,
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: AppFontSize.h3,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        "📝 Important Notes: None",
-                        style: GoogleFonts.varelaRound(
-                          fontSize: AppFontSize.h3,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
+                      // ...patient.notes.map(
+                      //   (note) => Padding(
+                      //     padding: const EdgeInsets.only(left: 8.0, bottom: 4),
+                      //     child: Row(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         const Text(
+                      //           "• ",
+                      //           style: TextStyle(
+                      //             fontSize: 16,
+                      //             color: Colors.black87,
+                      //           ),
+                      //         ),
+                      //         Expanded(
+                      //           child: Text(
+                      //             note,
+                      //             style: GoogleFonts.varelaRound(
+                      //               fontSize: AppFontSize.h3,
+                      //               color: Colors.black87,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                    // ] else ...[
+                    //   Text(
+                    //     "📝 Important Notes: None",
+                    //     style: GoogleFonts.varelaRound(
+                    //       fontSize: AppFontSize.h3,
+                    //       color: Colors.black54,
+                    //     ),
+                    //   ),
+                    // ],
                   ],
                 ),
               ),

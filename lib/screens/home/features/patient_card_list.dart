@@ -1,6 +1,6 @@
 import 'package:doctors_app/common_class/animations/slider.dart';
 import 'package:doctors_app/common_class/textStyle.dart';
-import 'package:doctors_app/domain/entities/patient.dart';
+import 'package:doctors_app/model/home_model.dart';
 import 'package:doctors_app/screens/home/features/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 class PatientCardList extends StatelessWidget {
   const PatientCardList({super.key, required this.patients});
 
-  final List<Patient> patients;
+  final List<ConsultationModel> patients;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class PatientCardList extends StatelessWidget {
                 color: Colors.white,
               ),
               title: Text(
-                p.name,
+                p.patientName,
                 style: GoogleFonts.spaceGrotesk(
                   fontSize: AppFontSize.h3,
                   fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class PatientCardList extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                "${p.mr} | ${p.dob} | ${p.type}",
+                "${p.opNumber} | ${p.dateOfBirth} | ${p.appointType}",
                 style: GoogleFonts.spaceGrotesk(
                   fontSize: AppFontSize.body,
                   fontWeight: FontWeight.w500,

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:doctors_app/common_class/netConfig.dart';
 import 'package:doctors_app/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +8,8 @@ class UserRemoteDataSource {
   UserRemoteDataSource(this.dio);
 
   Future<Usermodel?> login(String email, String password) async {
+    final ip = NetCon.baseUrl;
+    
     try {
       // Admin shortcut
       if (email == "admin@example.com" && password == "admin@123") {
@@ -30,7 +33,7 @@ class UserRemoteDataSource {
         print("its in the login function");
       // Step 1: Login API
       final response = await dio.post(
-        "http://192.168.29.142:5000/user/login",
+        "http://$ip/user/login",
         data: {"username": email, "password": password},
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -53,7 +56,7 @@ class UserRemoteDataSource {
 
       // Step 3: Call staff/userid API
       final userResponse = await dio.get(
-        "http://192.168.29.142:5000/staff/$userId",
+        "http://$ip/staff/$userId",
         options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
       print("User details response: ${userResponse.data}");

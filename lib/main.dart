@@ -5,7 +5,7 @@ import 'injection_container.dart' as di;
 Future<void> main() async {
   //  debugPrintRebuildDirtyWidgets = true;
   WidgetsFlutterBinding.ensureInitialized();
-  await di.initUser(); // initialize dependencies
+  await di.initDependencies(); // initialize dependencies
 
   runApp(
     const MyApp(),

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:doctors_app/domain/use%20case/get_patient.dart';
+import 'package:doctors_app/domain/usecase/get_patient.dart';
 import '../../../domain/entities/patient.dart';
 
 // ----------------- Events -----------------

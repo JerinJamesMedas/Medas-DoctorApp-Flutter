@@ -11,6 +11,7 @@ class LoginCheck extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString("accessToken");
     final userId = prefs.getInt("user_id");
+    print(userId);
 
     return accessToken != null && userId != null;
   }
@@ -26,12 +27,14 @@ class LoginCheck extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snapshot.hasData && snapshot.data != null) {
+        if (snapshot.hasData && snapshot.data == true) {
           // User found → go to Home
           //  print("app realized their is key");
+          print(snapshot.data);
+          print("something is in user ");
           return BottomNavPage();
         } else {
-          // No user found → go to Login
+          
           return const LandingPage();
         }
       },

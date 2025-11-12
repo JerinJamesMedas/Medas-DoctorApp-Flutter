@@ -1,4 +1,4 @@
-import 'package:doctors_app/domain/use%20case/get_doctor.dart';
+import 'package:doctors_app/domain/usecase/get_doctor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:doctors_app/domain/entities/doctor.dart';
 

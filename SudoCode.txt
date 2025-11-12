@@ -1,0 +1,50 @@
+Flutter Applicaition
+		
+			- Bloc State Management 
+			- Getit Instance Management
+			
+			
+	start :
+			1. Event Tringger form ui :
+					-	bloc catch the trigger 
+					-	blocProvider( create: (_) => sl<homeBloc>()..add(loadHome()), child:homeScreen());
+							in bloc :
+										- create absract class for homeEvent and homeState. 
+												- homeState: 
+																will contain extended classes ( InitialHome, loadingHome, loadedHome, errorHome)
+												- homeEvent: 
+																will contain the event class loadHome( which is the event that get trigger)
+																
+					-	Bloc pseudo-code:
+											
+											1. create homeState absract class
+											2. create loadHome extends homeState
+											3. create homeEvent abstract class 
+											4. create initialHome extends homeEvent
+											5. create loadingHome extends homeEvent
+											6. create errorHome extends homeEvent
+											7. create loadedHome extends homeEvent : final List<Home> home
+											8. create homeBloc extends Bloc<homeEvent,homeState> : homeBloc()
+																									:- super(initialHome())
+																										: on<homeEvent> (event, emit) => async (emit(loadingHome()) 
+																											try : 	await * final home =  GetHomeData(),	emit(loadedHome(home)																											
+																												catch : error * emit(errorHome("error occured")
+					- 	Getit Registration: 
+											1. register factory of homeBloc with funtion GetHomeData() : gi.registerFactory<homeBloc>(() => homeBloc(gi<GetHomeData>()))
+											2. register lazy singleton of GetHomeData with function homeRepository() : gi.registerlazySingleton<GetHomeData>(()=> GetHomeData(gi<homeRepository>()))
+											3. register lazy singleton of homeRepository with a function homeRemoteData using homeRepoImp : gi.registerLazySigleton<homeRepository>(()=> homeRepoImp(gi<homeRemoteData>()))
+											4. register lazy singleton of homeRemoteData with a function Dio or any netProtocol : gi.registerlazysingleton< homeRemoteData>(()=> homeRemoteData(gi<Dio>()))
+										
+					
+						HomeScreen Pseudo-code:
+												*. Getit data Rgistration: initState() : if !gi.registerFactory<homeBloc>() ? initHome = di.initHome() : initHome = Future.value()
+												
+														
+												1. UI homescreen Trigger Event - loadHome of homeBloc
+												2. from homeBloc - usecase -> GetHomeData 
+												3. from GetHomeData - repository -> homeRepository
+												4. from homeRepository - repoimpl -> homeRepoImpl
+												5. from homeRepoImp - remotedata -> homeRemoteData
+												6. from homeRemoteData - data - Dio 
+												
+																															
