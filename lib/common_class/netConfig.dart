@@ -12,5 +12,5 @@ class NetCon {
     }
   }
 
-  static String get baseUrl => "192.168.1.146:5000"; 
+  static String get baseUrl => "192.168.29.143:5000"; 
 }

@@ -1,7 +1,7 @@
 import 'package:doctors_app/common_class/animations/slider.dart';
 import 'package:doctors_app/common_class/textStyle.dart';
-import 'package:doctors_app/model/home_model.dart';
-import 'package:doctors_app/screens/home/features/patient_details.dart';
+import 'package:doctors_app/features/home/presentation/model/home_model.dart';
+import 'package:doctors_app/features/home/presentation/widgets/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

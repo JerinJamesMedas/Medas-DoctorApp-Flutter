@@ -1,4 +1,4 @@
-import 'package:doctors_app/screens/home/home.dart';
+import 'package:doctors_app/features/home/presentation/screen/home.dart';
 // import 'package:doctors_app/screens/shedule_screen.dart/features/shedule_skeletonizer.dart';
 import 'package:doctors_app/screens/shedule_screen.dart/shedule.dart';
 import 'package:doctors_app/screens/user/user.dart';

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       routes: AppRouter.routes,
-      initialRoute: AppRouter.logincheck,
+      initialRoute: AppRouter.patientHistory,
       // routes: AppRouter.routes,
       // home: LoginCheck(),
     );
